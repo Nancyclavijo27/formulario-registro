@@ -1,6 +1,8 @@
 // App.js
 import React from 'react';
+import './index.css';  // Importa estilos globales
 import RegistrationForm from './componets/RegistrationForm';
+
 
 const App = () => {
   return (
