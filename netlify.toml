@@ -7,5 +7,15 @@
 
 [[redirects]]
   from = "/*"
-  to = "/cliente/build/index.html"
+  to = "/client/dist/index.html"
   status = 200
+
+[build]
+  command = "echo 'No build command specified'"
+  publish = "/client/dist"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[build.environment]
+  NODE_VERSION = "14"
