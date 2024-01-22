@@ -4,18 +4,21 @@ import validateForm from './validations';
 import './registrationFormStyles.css';
 
 const RegistrationForm = () => {
-  // Estado para almacenar los datos del formulario
-  const [userData, setUserData] = useState({
+  const initialUserData = {
     name: '',
     email: '',
     password: ''
-  });
+  };
+
+  const [userData, setUserData] = useState(initialUserData);
 
   // Estado para manejar errores de validación
   const [errors, setErrors] = useState({});
 
   // Estado para manejar el mensaje de éxito
   const [successMessage, setSuccessMessage] = useState(null);
+  const [emailResponseMessage, setEmailResponseMessage] = useState(null);
+
 
   // Maneja el cambio en los campos del formulario
   const handleInputChange = (e) => {
@@ -24,6 +27,13 @@ const RegistrationForm = () => {
       ...prevData,
       [name]: value
     }));
+
+    // Después de 5 segundos, reiniciar los mensajes y errores
+    setTimeout(() => {
+      setSuccessMessage(null);
+      setEmailResponseMessage(null);
+    }, 15000);
+
 
     // Limpia los errores cuando el usuario escribe
     setErrors((prevErrors) => ({
@@ -42,6 +52,7 @@ const RegistrationForm = () => {
       // Si hay errores, actualiza el estado de los errores y no envía la solicitud
       setErrors(formErrors);
       setSuccessMessage(null); // Reinicia el mensaje de éxito si había uno previo
+      setEmailResponseMessage(null);
       return;
     }
 
@@ -52,13 +63,17 @@ const RegistrationForm = () => {
 
       // Muestra un mensaje de éxito al usuario
       setSuccessMessage(response.data.message);
+      setEmailResponseMessage(response.data.emailMessage);
       setErrors({}); // Reinicia los errores
+      setUserData(initialUserData); // Limpiar datos del formulario después del registro
+
 
     } catch (error) {
       console.error(error.response.data);
 
       // Muestra un mensaje de error con información relevante
       setSuccessMessage(null); // Reinicia el mensaje de éxito
+      setEmailResponseMessage(null);
       setErrors({ general: 'Error al registrar usuario' }); // Un mensaje de error general
     }
   };
@@ -106,6 +121,7 @@ const RegistrationForm = () => {
         <button type="submit">Registrarse</button>
 
         {successMessage && <p className="success">{successMessage}</p>}
+        {emailResponseMessage && <p className="success">{emailResponseMessage}</p>}
         {errors.general && <p className="error">{errors.general}</p>}
       </form>
     </div>
