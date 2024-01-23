@@ -3,6 +3,8 @@ import axios from 'axios';
 import validateForm from './validations';
 import './registrationFormStyles.css';
 
+const apiUrl = 'https://apiform-5lq3.onrender.com/api';
+
 const RegistrationForm = () => {
   const initialUserData = {
     name: '',
@@ -58,7 +60,7 @@ const RegistrationForm = () => {
 
     try {
       // Envia la solicitud POST a la API para registrar al usuario
-      const response = await axios.post('http://localhost:5000/api/users/register', userData);
+      const response = await axios.post( apiUrl , userData);
       console.log(response.data);
 
       // Muestra un mensaje de éxito al usuario
