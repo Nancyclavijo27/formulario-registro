@@ -6,14 +6,17 @@ const app = express();
 
 app.use(express.json());
 
+app.use(cors());
+
 const corsOptions = {
-  origin: ['https://frontend1.com', 'https://frontend2.com'], // Permitir solicitudes desde estos orígenes
-  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  origin: '*', // Permitir solicitudes desde cualquier origen
+  methods: 'POST',
   credentials: true,
   optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
+
 
 const PORT = process.env.PORT || 5000;
 

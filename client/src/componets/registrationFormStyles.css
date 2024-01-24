@@ -1,5 +1,3 @@
-/* registrationFormStyles.css */
-
 /* Estilos para el contenedor del formulario */
 .registration-form-container {
   display: flex;
@@ -36,13 +34,13 @@ input {
 }
 
 /* Estilos para los mensajes de error y éxito */
-.error {
+.error-message {
   color: #ff3333; /* Rojo para mensajes de error */
   margin-top: 10px;
   margin-bottom: 10px;
 }
 
-.success {
+.success-message {
   color: #009900; /* Verde para mensajes de éxito */
   margin-top: 10px;
   margin-bottom: 10px;

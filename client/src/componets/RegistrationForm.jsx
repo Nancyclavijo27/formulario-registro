@@ -3,8 +3,8 @@ import axios from 'axios';
 import validateForm from './validations';
 import './registrationFormStyles.css';
 
-// Utiliza el dominio donde se despliega tu backend en lugar de localhost
-const apiUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || 'https://apiform-5lq3.onrender.com';
+// Define la URL del backend según el entorno
+const apiUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
 const RegistrationForm = () => {
   const initialUserData = {
@@ -46,8 +46,9 @@ const RegistrationForm = () => {
       // Enviar la solicitud a la API
       const response = await axios.post(`${apiUrl}/users/register`, userData);
 
+
       // Manejar la respuesta de la API
-      if (response.data.success) {
+      if (response.data && response.data.success) {
         setSuccessMessage(response.data.message);
       } else {
         setEmailResponseMessage(response.data.error);
