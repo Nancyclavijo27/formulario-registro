@@ -2,12 +2,8 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 
-// Configurar CORS para permitir cualquier origen
-app.use(cors({
-  origin: 'http://localhost:3000',  // Reemplaza con la URL de tu aplicación React
-  optionsSuccessStatus: 200
-}));
 
+app.use(cors());
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;

@@ -16,7 +16,9 @@ const RegistrationForm = () => {
   const [emailResponseMessage, setEmailResponseMessage] = useState(null);
 
   // Cambia la URL de la API para apuntar a tu servidor local
-  const apiUrl = 'http://localhost:5000/api';
+  const apiUrl = "https://apiform-5lq3.onrender.com"
+
+  ;
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
