@@ -7,8 +7,10 @@ const app = express();
 app.use(express.json());
 
 const corsOptions = {
-  origin: '*',
-  optionsSuccessStatus: 200,
+  origin: ['https://frontend1.com', 'https://frontend2.com'], // Permitir solicitudes desde estos orígenes
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+  optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));

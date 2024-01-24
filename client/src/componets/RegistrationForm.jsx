@@ -31,6 +31,8 @@ const RegistrationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    console.log('Antes de la validación y envío de solicitud');
+
     // Validar el formulario antes de enviar la solicitud
     const validationErrors = validateForm(userData);
     setErrors(validationErrors);
@@ -53,6 +55,7 @@ const RegistrationForm = () => {
     } catch (error) {
       console.error('Error al enviar la solicitud:', error);
     }
+    console.log('Después del envío de solicitud');
   };
 
   return (
