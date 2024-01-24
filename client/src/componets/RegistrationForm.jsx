@@ -3,6 +3,9 @@ import axios from 'axios';
 import validateForm from './validations';
 import './registrationFormStyles.css';
 
+// Utiliza el dominio donde se despliega tu backend en lugar de localhost
+const apiUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL || 'https://apiform-5lq3.onrender.com';
+
 const RegistrationForm = () => {
   const initialUserData = {
     name: '',
@@ -15,10 +18,7 @@ const RegistrationForm = () => {
   const [successMessage, setSuccessMessage] = useState(null);
   const [emailResponseMessage, setEmailResponseMessage] = useState(null);
 
-  // Cambia la URL de la API para apuntar a tu servidor local
-  const apiUrl = "https://apiform-5lq3.onrender.com"
-
-  ;
+  
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
