@@ -3,8 +3,6 @@ import axios from 'axios';
 import validateForm from './validations';
 import './registrationFormStyles.css';
 
-const apiUrl = 'https://apiform-5lq3.onrender.com/api';
-
 const RegistrationForm = () => {
   const initialUserData = {
     name: '',
@@ -13,119 +11,92 @@ const RegistrationForm = () => {
   };
 
   const [userData, setUserData] = useState(initialUserData);
-
-  // Estado para manejar errores de validación
   const [errors, setErrors] = useState({});
-
-  // Estado para manejar el mensaje de éxito
   const [successMessage, setSuccessMessage] = useState(null);
   const [emailResponseMessage, setEmailResponseMessage] = useState(null);
 
+  // Cambia la URL de la API para apuntar a tu servidor local
+  const apiUrl = 'http://localhost:5000/api';
 
-  // Maneja el cambio en los campos del formulario
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prevData) => ({
-      ...prevData,
+    setUserData({
+      ...userData,
       [name]: value
-    }));
-
-    // Después de 5 segundos, reiniciar los mensajes y errores
-    setTimeout(() => {
-      setSuccessMessage(null);
-      setEmailResponseMessage(null);
-    }, 15000);
-
-
-    // Limpia los errores cuando el usuario escribe
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: null
-    }));
+    });
   };
 
-  // Maneja el evento de registro
-  const handleRegistration = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar antes de enviar
-    const formErrors = validateForm(userData);
-    if (Object.values(formErrors).some((error) => error !== null)) {
-      // Si hay errores, actualiza el estado de los errores y no envía la solicitud
-      setErrors(formErrors);
-      setSuccessMessage(null); // Reinicia el mensaje de éxito si había uno previo
-      setEmailResponseMessage(null);
+    // Validar el formulario antes de enviar la solicitud
+    const validationErrors = validateForm(userData);
+    setErrors(validationErrors);
+
+    if (Object.keys(validationErrors).length > 0) {
+      // Si hay errores de validación, no enviar la solicitud
       return;
     }
 
     try {
-      // Envia la solicitud POST a la API para registrar al usuario
-      const response = await axios.post( apiUrl , userData);
-      console.log(response.data);
+      // Enviar la solicitud a la API
+      const response = await axios.post(`${apiUrl}/users/register`, userData);
 
-      // Muestra un mensaje de éxito al usuario
-      setSuccessMessage(response.data.message);
-      setEmailResponseMessage(response.data.emailMessage);
-      setErrors({}); // Reinicia los errores
-      setUserData(initialUserData); // Limpiar datos del formulario después del registro
-
-
+      // Manejar la respuesta de la API
+      if (response.data.success) {
+        setSuccessMessage(response.data.message);
+      } else {
+        setEmailResponseMessage(response.data.error);
+      }
     } catch (error) {
-      console.error(error.response.data);
-
-      // Muestra un mensaje de error con información relevante
-      setSuccessMessage(null); // Reinicia el mensaje de éxito
-      setEmailResponseMessage(null);
-      setErrors({ general: 'Error al registrar usuario' }); // Un mensaje de error general
+      console.error('Error al enviar la solicitud:', error);
     }
   };
 
-  // Renderiza el formulario
   return (
-    <div >
-      <form onSubmit={handleRegistration} className="registration-form">
+    <div className="registration-form-container">
+      <form onSubmit={handleSubmit}>
         <div>
-          <label>
-            Nombre:
-            <input
-              type="text"
-              name="name"
-              value={userData.name}
-              onChange={handleInputChange}
-            />
-            {errors.name && <p className="error">{errors.name}</p>}
-          </label>
+          <label htmlFor="name">Nombre:</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={userData.name}
+            onChange={handleInputChange}
+          />
+          {errors.name && <p className="error-message">{errors.name}</p>}
         </div>
-        <div>
-          <label>
-            Correo Electrónico:
-            <input
-              type="email"
-              name="email"
-              value={userData.email}
-              onChange={handleInputChange}
-            />
-            {errors.email && <p className="error">{errors.email}</p>}
-          </label>
-        </div>
-        <div>
-          <label>
-            Contraseña:
-            <input
-              type="password"
-              name="password"
-              value={userData.password}
-              onChange={handleInputChange}
-            />
-            {errors.password && <p className="error">{errors.password}</p>}
-          </label>
-        </div>
-        <button type="submit">Registrarse</button>
 
-        {successMessage && <p className="success">{successMessage}</p>}
-        {emailResponseMessage && <p className="success">{emailResponseMessage}</p>}
-        {errors.general && <p className="error">{errors.general}</p>}
+        <div>
+          <label htmlFor="email">Correo Electrónico:</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            value={userData.email}
+            onChange={handleInputChange}
+          />
+          {errors.email && <p className="error-message">{errors.email}</p>}
+        </div>
+
+        <div>
+          <label htmlFor="password">Contraseña:</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            value={userData.password}
+            onChange={handleInputChange}
+          />
+          {errors.password && <p className="error-message">{errors.password}</p>}
+        </div>
+
+        <button type="submit">Registrar</button>
       </form>
+
+      {successMessage && <p className="success-message">{successMessage}</p>}
+      {emailResponseMessage && <p className="error-message">{emailResponseMessage}</p>}
     </div>
   );
 };
