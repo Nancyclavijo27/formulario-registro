@@ -3,10 +3,8 @@ import axios from 'axios';
 import validateForm from './validations';
 import './registrationFormStyles.css';
 
-const apiUrl = process.env.NODE_ENV === 'production'
-  ? 'https://apiform-5lq3.onrender.com/api'
-  : 'http://localhost:5000/api';
-
+// Define la URL del backend según el entorno
+const apiUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL;
 
 const RegistrationForm = () => {
   const initialUserData = {

@@ -10,7 +10,7 @@ app.use(cors());
 
 const corsOptions = {
   origin: '*', // Permitir solicitudes desde cualquier origen
-  methods: 'POST',
+  
   credentials: true,
   optionsSuccessStatus: 204,
 };
